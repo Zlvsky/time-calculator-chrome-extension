@@ -8,7 +8,7 @@ function App() {
   const [date, setDate] = useState<Date>();
 
   return (
-    <main className="bg-white border p-6">
+    <main className="bg-white p-6">
       <div className="w-full flex justify-between">
         <div className="flex flex-col gap-1 max-w-max">
           <InputHeader>Start time</InputHeader>
@@ -21,24 +21,34 @@ function App() {
       </div>
 
       <div className="my-6 w-full border bg-muted py-1 px-2 border-lightGray rounded-md flex items-center justify-between">
-        <span className="text-sm">Worked 0/8h</span>
+        <span className="text-sm">
+          Worked 0/8h
+        </span>
         <span className="text-sm">Remaining 8h</span>
       </div>
 
-      <div className="w-full flex justify-between items-center">
-        <div className="flex flex-col gap-1 max-w-max">
+      <div className="w-full flex flex-col justify-between gap-3">
+        <div className="flex flex-row gap-5 justify-between ">
           <InputHeader>Working to</InputHeader>
           <TimePicker setDate={setDate} date={date} />
         </div>
-        <Button size={"lg"}>Add</Button>
+        <Button className="w-full" size={"sm"}>
+          Add
+        </Button>
       </div>
 
-      <div className="w-full flex justify-between items-center mt-6">
-        <div className="flex flex-col gap-1 max-w-max">
+      <div className="w-full flex flex-col justify-between gap-3 mt-3">
+        <div className="flex flex-row gap-5 justify-between">
           <InputHeader>Break</InputHeader>
           <TimePicker setDate={setDate} date={date} />
         </div>
-        <Button size={"lg"}>Add</Button>
+        <Button
+          className="w-full border border-black"
+          variant={"outline"}
+          size={"sm"}
+        >
+          Add
+        </Button>
       </div>
 
       <div className="flex flex-col mt-6">
