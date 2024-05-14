@@ -8,9 +8,9 @@
     "default_title": "Time Calculator"
   },
   "icons": {
-    "16": "vite.svg",
-    "48": "vite.svg",
-    "128": "vite.svg"
+    "16": "logo.svg",
+    "48": "logo.svg",
+    "128": "logo.svg"
   },
   "permissions": ["storage"]
 }

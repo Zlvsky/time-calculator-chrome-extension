@@ -5,9 +5,11 @@ interface IProps {
 function Reset({ handleReset }: IProps) {
   return (
     <div className="mt-2 w-full text-right">
-      <span className="border-b border-black text-right text-sm" onClick={handleReset}>
+      <button
+        className="cursor-pointer border-b border-black text-right text-sm"
+        onClick={handleReset}>
         Reset
-      </span>
+      </button>
     </div>
   )
 }
