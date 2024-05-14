@@ -1,20 +1,27 @@
-import { Button } from "@/components/ui/button/Button";
-import InputHeader from "@/components/ui/input-header/InputHeader";
-import { TimePicker } from "@/components/ui/time-picker/TimePicker";
+import { Button } from '@/components/ui/button/Button'
+import InputHeader from '@/components/ui/input-header/InputHeader'
+import { TimePicker } from '@/components/ui/time-picker/TimePicker'
 
 interface IProps {
-  breakTo: Date | undefined;
-  setBreakTo: (date: Date | undefined) => void;
-  isSet: boolean;
-  error: boolean;
-  lastTimeSet: Date | undefined;
-  handleAddTime: () => void;
+  breakTo: Date | undefined
+  setBreakTo: (date: Date | undefined) => void
+  isSet: boolean
+  error: boolean
+  lastTimeSet: Date | undefined
+  handleAddTime: () => void
 }
 
-function BreakTo({ breakTo, setBreakTo, isSet, error, lastTimeSet, handleAddTime }: IProps) {
+function BreakTo({
+  breakTo,
+  setBreakTo,
+  isSet,
+  error,
+  lastTimeSet,
+  handleAddTime
+}: IProps) {
   return (
-    <div className="w-full flex flex-col justify-between gap-3 mt-3">
-      <div className="flex flex-row gap-5 justify-between">
+    <div className="mt-3 flex w-full flex-col justify-between gap-3">
+      <div className="flex flex-row justify-between gap-5">
         <div className="flex flex-col items-start">
           <InputHeader>Break to:</InputHeader>
           {error ? (
@@ -29,15 +36,15 @@ function BreakTo({ breakTo, setBreakTo, isSet, error, lastTimeSet, handleAddTime
       </div>
       <Button
         className="w-full border border-black"
-        variant={"outline"}
-        size={"sm"}
+        variant={'outline'}
+        size={'sm'}
         disabled={!isSet}
         onClick={handleAddTime}
       >
         Add
       </Button>
     </div>
-  );
+  )
 }
 
-export default BreakTo;
+export default BreakTo

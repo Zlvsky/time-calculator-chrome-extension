@@ -1,14 +1,14 @@
-import { Button } from "@/components/ui/button/Button";
-import InputHeader from "@/components/ui/input-header/InputHeader";
-import { TimePicker } from "@/components/ui/time-picker/TimePicker";
+import { Button } from '@/components/ui/button/Button'
+import InputHeader from '@/components/ui/input-header/InputHeader'
+import { TimePicker } from '@/components/ui/time-picker/TimePicker'
 
 interface IProps {
-  workingTo: Date | undefined;
-  setWorkingTo: (date: Date | undefined) => void;
-  isSet: boolean;
-  error: boolean;
-  lastTimeSet: Date | undefined;
-  handleAddTime: () => void;
+  workingTo: Date | undefined
+  setWorkingTo: (date: Date | undefined) => void
+  isSet: boolean
+  error: boolean
+  lastTimeSet: Date | undefined
+  handleAddTime: () => void
 }
 
 function WorkingTo({
@@ -17,11 +17,11 @@ function WorkingTo({
   isSet,
   error,
   lastTimeSet,
-  handleAddTime,
+  handleAddTime
 }: IProps) {
   return (
-    <div className="w-full flex flex-col justify-between gap-3">
-      <div className="flex flex-row gap-5 justify-between ">
+    <div className="flex w-full flex-col justify-between gap-3">
+      <div className="flex flex-row justify-between gap-5 ">
         <div className="flex flex-col items-start">
           <InputHeader>Working to:</InputHeader>
           {error ? (
@@ -34,16 +34,11 @@ function WorkingTo({
         </div>
         <TimePicker disabled={!isSet} setDate={setWorkingTo} date={workingTo} />
       </div>
-      <Button
-        className="w-full"
-        size={"sm"}
-        disabled={!isSet}
-        onClick={handleAddTime}
-      >
+      <Button className="w-full" size={'sm'} disabled={!isSet} onClick={handleAddTime}>
         Add
       </Button>
     </div>
-  );
+  )
 }
 
-export default WorkingTo;
+export default WorkingTo

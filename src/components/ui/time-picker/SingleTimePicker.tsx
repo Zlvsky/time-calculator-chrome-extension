@@ -1,15 +1,15 @@
-import * as React from "react";
-import { Label } from "../label/Label";
-import { TimePickerInput } from "./TimePickerInput";
+import * as React from 'react'
+import { Label } from '../label/Label'
+import { TimePickerInput } from './TimePickerInput'
 
 interface TimePickerDemoProps {
-  date: Date | undefined;
-  setDate: (date: Date | undefined) => void;
-  disabled?: boolean;
+  date: Date | undefined
+  setDate: (date: Date | undefined) => void
+  disabled?: boolean
 }
 
 export function SingleTimePicker({ date, setDate, disabled }: TimePickerDemoProps) {
-  const hourRef = React.useRef<HTMLInputElement>(null);
+  const hourRef = React.useRef<HTMLInputElement>(null)
 
   return (
     <div className="flex items-end gap-2">
@@ -26,5 +26,5 @@ export function SingleTimePicker({ date, setDate, disabled }: TimePickerDemoProp
         />
       </div>
     </div>
-  );
+  )
 }
