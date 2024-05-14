@@ -16,7 +16,13 @@ function App() {
   const [breakTo, setBreakTo] = useState<Date>();
   const [storedTimes, setStoredTimes] = useState<any>([]);
 
+  const [workingToError, setWorkingToError] = useState(false);
+  const [breakToError, setBreakToError] = useState(false);
+
   const handleSet = () => {
+    if (!startTime || !goal) return;
+    console.log(goal?.getHours())
+    if (!goal?.getHours()) return;
     setIsSet(true);
     setLastTimeSet(startTime);
   };
@@ -25,14 +31,17 @@ function App() {
   const formatTimeData = (
     startTime: Date,
     workingTo: Date,
-    timeData: { hours: number; minutes: number }
+    timeData: { hours: number; minutes: number },
+    isBreak: boolean
   ) => {
-    const formattedTime = `${startTime
-      ?.toLocaleTimeString()
-      .slice(0, 5)} - ${workingTo?.toLocaleTimeString().slice(0, 5)} (${
-      timeData.hours
-    }h${timeData.minutes}m)`;
-    return formattedTime;
+    let timeString = `${timeData.hours}h${timeData.minutes}m`;
+    if (isBreak) timeString += " (break)";
+    const formattedTimeData = {
+      from: startTime?.toLocaleTimeString().slice(0, 5),
+      to: workingTo?.toLocaleTimeString().slice(0, 5),
+      timeString: timeString,
+    };
+    return formattedTimeData;
   };
 
   // CALCULATE HOURS AND MINUTES BETWEEN lastTimeSet AND workingTo AND PASS IT TO FLOAT
@@ -48,12 +57,38 @@ function App() {
     return timeData;
   };
 
+  const handleValidate = (isBreak: boolean) => {
+    // VALIDATE IF BREAK TIME HIGHER THAN LAST TIEM SET
+    if (isBreak) {
+      if (breakTo! < lastTimeSet!) {
+        setBreakToError(true);
+        return false;
+      }
+      else {
+        setBreakToError(false);
+        return true; 
+    }
+    }
+    // VALIDATE IF WORKING TIME HIGHER THAN LAST TIEM SET
+    if (workingTo! < lastTimeSet!) {
+      setWorkingToError(true);
+      return false;
+    }
+    else {
+      setWorkingToError(false);
+      return true;
+    }
+  }
+
   const handleAddTime = (isBreak: boolean = false) => {
     if ((isBreak && !breakTo) || !lastTimeSet) return;
     else if ((!isBreak && !workingTo) || !lastTimeSet) return;
+    
+    const isValid = handleValidate(isBreak);
+    if (!isValid) return;
 
     const timeData = calculateTimeData(lastTimeSet, isBreak ? breakTo! : workingTo!, isBreak);
-    const formattedTime = formatTimeData(lastTimeSet, isBreak ? breakTo! : workingTo!, timeData);
+    const formattedTime = formatTimeData(lastTimeSet, isBreak ? breakTo! : workingTo!, timeData, isBreak);
 
     if (isBreak) {
       setLastTimeSet(breakTo);
@@ -64,7 +99,7 @@ function App() {
     }
 
     const storedTimeData = {
-      timeString: formattedTime,
+      formattedTime: formattedTime,
       timeData: timeData,
     };
 
@@ -72,7 +107,7 @@ function App() {
   };
 
   return (
-    <main className="bg-white p-6">
+    <main className="max-w-[380px] w-full bg-white p-6">
       <SetTime
         startTime={startTime}
         setStartTime={setStartTime}
@@ -88,6 +123,8 @@ function App() {
         workingTo={workingTo}
         setWorkingTo={setWorkingTo}
         isSet={isSet}
+        error={workingToError}
+        lastTimeSet={lastTimeSet}
         handleAddTime={() => handleAddTime(false)}
       />
 
@@ -95,6 +132,8 @@ function App() {
         breakTo={breakTo}
         setBreakTo={setBreakTo}
         isSet={isSet}
+        error={breakToError}
+        lastTimeSet={lastTimeSet}
         handleAddTime={() => handleAddTime(true)}
       />
 

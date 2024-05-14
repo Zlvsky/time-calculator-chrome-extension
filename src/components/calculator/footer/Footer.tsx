@@ -1,7 +1,7 @@
 function Footer() {
     return (
       <div className="w-full border-t border-lightGray mt-10 flex items-center justify-between gap-10 pt-3">
-        <span className="text-sm text-secondary">
+        <span className="text-xs text-secondary/80">
           Made with 🖤 by <a href="https://twitter.com/Zlvskyy">@zlvskyy</a>
         </span>
         <a

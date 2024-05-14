@@ -6,16 +6,24 @@ interface IProps {
   breakTo: Date | undefined;
   setBreakTo: (date: Date | undefined) => void;
   isSet: boolean;
+  error: boolean;
+  lastTimeSet: Date | undefined;
   handleAddTime: () => void;
 }
 
-function BreakTo({ breakTo, setBreakTo, isSet, handleAddTime }: IProps) {
+function BreakTo({ breakTo, setBreakTo, isSet, error, lastTimeSet, handleAddTime }: IProps) {
   return (
     <div className="w-full flex flex-col justify-between gap-3 mt-3">
       <div className="flex flex-row gap-5 justify-between">
         <div className="flex flex-col items-start">
           <InputHeader>Break to:</InputHeader>
-          <p className="text-sm text-secondary/80">example: 15:30</p>
+          {error ? (
+            <p className="text-sm text-red-600">
+              must be after {lastTimeSet!.toLocaleTimeString().slice(0, 5)}
+            </p>
+          ) : (
+            <p className="text-sm text-secondary/80">example: 15:30</p>
+          )}
         </div>
         <TimePicker disabled={!isSet} setDate={setBreakTo} date={breakTo} />
       </div>
