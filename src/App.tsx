@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SetTime from "./components/calculator/set-time/SetTime";
 import HoursBar from "./components/calculator/hours-bar/HoursBar";
 import WorkingTo from "./components/calculator/working-to/WorkingTo";
@@ -20,12 +20,36 @@ function App() {
   const [workingToError, setWorkingToError] = useState(false);
   const [breakToError, setBreakToError] = useState(false);
 
+  useEffect(() => {
+    // GET DATA FROM LOCAL STORAGE
+    chrome.storage.local.get(
+      ["isSet", "lastTimeSet", "storedTimes", "goal", "startTime"],
+      function (result) {
+        if (result.isSet) setIsSet(result.isSet);
+        if (result.lastTimeSet) setLastTimeSet(new Date(result.lastTimeSet));
+        if (result.storedTimes) setStoredTimes(result.storedTimes);
+        if (result.goal) setGoal(new Date(result.goal));
+        if (result.startTime) setStartTime(new Date(result.startTime));
+      }
+    );
+  }, []);
+
   const handleSet = () => {
     if (!startTime || !goal) return;
-    console.log(goal?.getHours())
     if (!goal?.getHours()) return;
-    setIsSet(true);
-    setLastTimeSet(startTime);
+
+    chrome.storage.local.set({ isSet: true }, function () {
+      setIsSet(true);
+    });
+
+    chrome.storage.local.set({ lastTimeSet: lastTimeSet?.toISOString() }, function () {
+      setLastTimeSet(startTime);
+    });
+    chrome.storage.local.set({ goal: goal?.toISOString() }, function () {});
+    chrome.storage.local.set(
+      { startTime: startTime?.toISOString() },
+      function () {}
+    );
   };
 
   // STORE STRING IN 00:00 - 00:00 (3H 30M) FORMAT
@@ -92,10 +116,20 @@ function App() {
     const formattedTime = formatTimeData(lastTimeSet, isBreak ? breakTo! : workingTo!, timeData, isBreak);
 
     if (isBreak) {
-      setLastTimeSet(breakTo);
+      chrome.storage.local.set(
+        { lastTimeSet: breakTo?.toISOString() },
+        function () {
+          setLastTimeSet(breakTo);
+        }
+      );
       setBreakTo(undefined);
     } else {
-      setLastTimeSet(workingTo);
+      chrome.storage.local.set(
+        { lastTimeSet: workingTo?.toISOString() },
+        function () {
+          setLastTimeSet(workingTo);
+        }
+      );
       setWorkingTo(undefined);
     }
 
@@ -104,7 +138,9 @@ function App() {
       timeData: timeData,
     };
 
-    setStoredTimes((prev: any) => [...prev, storedTimeData]);
+    chrome.storage.local.set({ storedTimes: [...storedTimes, storedTimeData] }, function () {
+      setStoredTimes((prev: any) => [...prev, storedTimeData]);
+    });
   };
 
   const handleReset = () => {
@@ -117,6 +153,11 @@ function App() {
     setStoredTimes([]);
     setWorkingToError(false);
     setBreakToError(false);
+    // REMOVE DATA FROM LOCAL STORAGE
+    chrome.storage.local.remove(
+      ["isSet", "lastTimeSet", "storedTimes", "goal", "startTime"],
+      function () {}
+    );
   }
 
   return (

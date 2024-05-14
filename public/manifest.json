@@ -3,8 +3,7 @@
   "description": "calculate hours and minutes you've worked in any given time period",
   "version": "1.0",
   "manifest_version": 3,
-  "default_locale": "en",
-  "browser_action": {
+  "action": {
     "default_popup": "index.html",
     "default_title": "Time Calculator"
   },
