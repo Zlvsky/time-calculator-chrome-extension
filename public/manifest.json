@@ -1,0 +1,32 @@
+{
+  "name": "X/Twitter Unfollowers",
+  "description": "Track who unfollowed you on X/Twitter",
+  "version": "1.0",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_popup": "index.html",
+    "default_title": "My first extension"
+  },
+  "icons": {
+    "16": "vite.svg",
+    "48": "vite.svg",
+    "128": "vite.svg"
+  },
+  "permissions": [
+    "tabs",
+    "webRequest",
+    "devtools",
+    "webRequestBlocking",
+    "storage",
+    "clipboardRead",
+    "clipboardWrite",
+    "activeTab",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  },
+  "host_permissions": ["*://*.twitter.com/*"],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
