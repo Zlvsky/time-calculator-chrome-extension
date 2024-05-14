@@ -1,18 +1,17 @@
 {
   "name": "Time Calculator",
-  "description": "Time Calculator",
+  "description": "calculate hours and minutes you've worked in any given time period",
   "version": "1.0",
-  "manifest_version": 2,
+  "manifest_version": 3,
+  "default_locale": "en",
   "browser_action": {
     "default_popup": "index.html",
-    "default_title": "My first extension"
+    "default_title": "Time Calculator"
   },
   "icons": {
     "16": "vite.svg",
     "48": "vite.svg",
     "128": "vite.svg"
   },
-  "permissions": [
-    "storage"
-  ]
+  "permissions": ["storage"]
 }

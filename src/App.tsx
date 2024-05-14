@@ -5,6 +5,7 @@ import WorkingTo from "./components/calculator/working-to/WorkingTo";
 import BreakTo from "./components/calculator/break-to/BreakTo";
 import ListedHours from "./components/calculator/listed-hours/ListedHours";
 import Footer from "./components/calculator/footer/Footer";
+import Reset from "./components/calculator/reset/Reset";
 
 function App() {
   const [startTime, setStartTime] = useState<Date>();
@@ -106,6 +107,18 @@ function App() {
     setStoredTimes((prev: any) => [...prev, storedTimeData]);
   };
 
+  const handleReset = () => {
+    setStartTime(undefined);
+    setGoal(undefined);
+    setIsSet(false);
+    setLastTimeSet(undefined);
+    setWorkingTo(undefined);
+    setBreakTo(undefined);
+    setStoredTimes([]);
+    setWorkingToError(false);
+    setBreakToError(false);
+  }
+
   return (
     <main className="max-w-[380px] w-full bg-white p-6">
       <SetTime
@@ -136,6 +149,8 @@ function App() {
         lastTimeSet={lastTimeSet}
         handleAddTime={() => handleAddTime(true)}
       />
+
+      <Reset handleReset={handleReset} />
 
       <ListedHours storedTimes={storedTimes} />
 
