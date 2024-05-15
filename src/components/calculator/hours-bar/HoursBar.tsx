@@ -55,8 +55,8 @@ function HoursBar({ isSet, goal, storedTimes }: IProps) {
 
   return (
     <div className="my-6 flex w-full items-center justify-between rounded-md border border-lightGray bg-muted px-2 py-1">
-      <Worked goal={goal} isSet={isSet} worked={hoursData?.worked} />
-      <Remaining isSet={isSet} remaining={hoursData?.remaining} />
+      <Worked goal={goal} isSet={isSet} worked={storedTimes.length ? hoursData?.worked : undefined} />
+      <Remaining isSet={isSet} remaining={storedTimes.length ? hoursData?.remaining : undefined} />
     </div>
   )
 }

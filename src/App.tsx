@@ -22,9 +22,11 @@ function App() {
 
   useEffect(() => {
     // GET DATA FROM LOCAL STORAGE
+    if (!window?.chrome?.runtime?.id) return
     chrome.storage.local.get(
       ['isSet', 'lastTimeSet', 'storedTimes', 'goal', 'startTime'],
       function (result) {
+        console.log(result)
         if (result.isSet) setIsSet(result.isSet)
         if (result.lastTimeSet) setLastTimeSet(new Date(result.lastTimeSet))
         if (result.storedTimes) setStoredTimes(result.storedTimes)
@@ -38,15 +40,20 @@ function App() {
     if (!startTime || !goal) return
     if (!goal?.getHours()) return
 
-    chrome.storage.local.set({ isSet: true }, function () {
-      setIsSet(true)
-    })
+    if (window?.chrome?.runtime?.id) {
+      chrome.storage.local.set({ isSet: true }, function () {
+        setIsSet(true)
+      })
 
-    chrome.storage.local.set({ lastTimeSet: lastTimeSet?.toISOString() }, function () {
+      chrome.storage.local.set({ lastTimeSet: startTime?.toISOString() }, function () {
+        setLastTimeSet(startTime)
+      })
+      chrome.storage.local.set({ goal: goal?.toISOString() }, function () {})
+      chrome.storage.local.set({ startTime: startTime?.toISOString() }, function () {})
+    } else {
+      setIsSet(true)
       setLastTimeSet(startTime)
-    })
-    chrome.storage.local.set({ goal: goal?.toISOString() }, function () {})
-    chrome.storage.local.set({ startTime: startTime?.toISOString() }, function () {})
+    }
   }
 
   // STORE STRING IN 00:00 - 00:00 (3H 30M) FORMAT
@@ -119,14 +126,20 @@ function App() {
     )
 
     if (isBreak) {
-      chrome.storage.local.set({ lastTimeSet: breakTo?.toISOString() }, function () {
-        setLastTimeSet(breakTo)
-      })
+      if (window?.chrome?.runtime?.id) {
+        chrome.storage.local.set({ lastTimeSet: breakTo?.toISOString() }, function () {
+          setLastTimeSet(breakTo)
+        })
+      } else setLastTimeSet(breakTo)
+
       setBreakTo(undefined)
     } else {
-      chrome.storage.local.set({ lastTimeSet: workingTo?.toISOString() }, function () {
-        setLastTimeSet(workingTo)
-      })
+      if (window?.chrome?.runtime?.id) {
+        chrome.storage.local.set({ lastTimeSet: workingTo?.toISOString() }, function () {
+          setLastTimeSet(workingTo)
+        })
+      } else setLastTimeSet(workingTo)
+
       setWorkingTo(undefined)
     }
 
@@ -135,12 +148,14 @@ function App() {
       timeData: timeData
     }
 
-    chrome.storage.local.set(
-      { storedTimes: [...storedTimes, storedTimeData] },
-      function () {
-        setStoredTimes((prev: any) => [...prev, storedTimeData])
-      }
-    )
+    if (window?.chrome?.runtime?.id) {
+      chrome.storage.local.set(
+        { storedTimes: [...storedTimes, storedTimeData] },
+        function () {
+          setStoredTimes((prev: any) => [...prev, storedTimeData])
+        }
+      )
+    } else setStoredTimes((prev: any) => [...prev, storedTimeData])
   }
 
   const handleReset = () => {
@@ -153,12 +168,23 @@ function App() {
     setStoredTimes([])
     setWorkingToError(false)
     setBreakToError(false)
-    // REMOVE DATA FROM LOCAL STORAGE
-    chrome.storage.local.remove(
-      ['isSet', 'lastTimeSet', 'storedTimes', 'goal', 'startTime'],
-      function () {}
-    )
+    if (window?.chrome?.runtime?.id) {
+      // REMOVE DATA FROM LOCAL STORAGE
+      chrome.storage.local.remove(
+        ['isSet', 'lastTimeSet', 'storedTimes', 'goal', 'startTime'],
+        function () {}
+      )
+    }
   }
+
+  // const handleDelete = (index: number) => {
+  //   const updatedStoredTimes = [...storedTimes]
+  //   updatedStoredTimes.splice(index, 1)
+  //   setStoredTimes(updatedStoredTimes)
+  //   if (window?.chrome?.runtime?.id) {
+  //     chrome.storage.local.set({ storedTimes: updatedStoredTimes }, function () {})
+  //   }
+  // }
 
   return (
     <main className="w-full max-w-[380px] bg-white p-6">
