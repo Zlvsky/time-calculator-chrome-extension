@@ -1,0 +1,16 @@
+{
+  "name": "Time Calculator",
+  "description": "calculate hours and minutes you've worked in any given time period",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "Time Calculator"
+  },
+  "icons": {
+    "16": "logo.svg",
+    "48": "logo.svg",
+    "128": "logo.svg"
+  },
+  "permissions": ["storage"]
+}
