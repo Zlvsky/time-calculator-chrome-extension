@@ -1,16 +1,23 @@
 {
   "name": "Time Calculator",
-  "description": "calculate hours and minutes you've worked in any given time period",
-  "version": "1.0",
+  "description": "Calculate hours and minutes you've worked in any given time period",
+  "version": "1.01",
   "manifest_version": 3,
   "action": {
     "default_popup": "index.html",
-    "default_title": "Time Calculator"
+    "default_title": "Time Calculator",
+    "default_icon": "logo-48.png"
   },
   "icons": {
-    "16": "logo.svg",
-    "48": "logo.svg",
-    "128": "logo.svg"
+    "16": "logo-16.png",
+    "48": "logo-48.png",
+    "128": "logo-128.png"
   },
+  "web_accessible_resources": [
+    {
+      "resources": ["logo-128.png", "logo-48.png", "logo-16.png"],
+      "matches": ["*://*/*"]
+    }
+  ],
   "permissions": ["storage"]
 }
